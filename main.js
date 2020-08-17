@@ -5,26 +5,25 @@
 		el: '#app',
 		data: {
 			newItem: '',
-			todos: [{
-				title: 'task 1',
-				isDone: false
-			}, {
-				title: 'task 2',
-				isDone: false
-			}, {
-				title: 'task 3',
-				isDone: true
-			}]
+			todos: []
 		},
 		//データの保持（リロードしてもリセットしない）
 		watch: { //データ変更の監視
 			todos: {
 				handler: function() {
+					//localStorage.setItem('キー', 値) これはJavaScript の文
+					//JSON.stringify() jsonの配列を文字列にデコードする
 					localStorage.setItem('todos', JSON.stringify(this.todos));
-					alert('Data saved!');
+					//alert('Data saved!');
 				},
 				deep: true
 			}
+		},
+		//リロードした際のデータ呼び出し
+		mounted: function() {
+			//JSON.parse() json文字列をJSのjsonオブジェクトに変換
+			//「|| []』でデータがなかった場合に空配列にする
+			this.todos = JSON.parse(localStorage.getItem('todos')) || [];
 		},
 		methods: {
 			addItem: function(e) {
